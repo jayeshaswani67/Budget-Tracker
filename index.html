@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>FinSight | Smart Budget Tracker SaaS</title>
+    <!-- Tailwind CSS + Font Awesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- custom config for smooth scroll & modal -->
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        .modal-backdrop {
+            transition: opacity 0.2s ease;
+        }
+        .transition-smooth {
+            transition: all 0.2s ease;
+        }
+        .testimonial-card, .service-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .testimonial-card:hover, .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.1);
+        }
+        .budget-card {
+            backdrop-filter: blur(2px);
+        }
+        .transaction-item {
+            transition: background 0.1s ease;
+        }
+        .transaction-item:hover {
+            background-color: #f9fafb;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="bg-white shadow-md sticky top-0 z-30 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+            <div class="flex flex-wrap items-center justify-between py-3 md:py-4">
+                <!-- Logo + Brand -->
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-chart-line text-indigo-600 text-2xl"></i>
+                    <span class="font-bold text-xl tracking-tight text-gray-800">Fin<span class="text-indigo-600">Sight</span></span>
+                </div>
+                <!-- Nav Links (desktop + responsive wrap) -->
+                <div class="flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium items-center mt-2 sm:mt-0">
+                    <a href="#home" class="hover:text-indigo-600 transition">Home</a>
+                    <a href="#about" class="hover:text-indigo-600 transition">About</a>
+                    <a href="#services" class="hover:text-indigo-600 transition">Services</a>
+                    <a href="#testimonials" class="hover:text-indigo-600 transition">Testimonials</a>
+                    <a href="#feedback" class="hover:text-indigo-600 transition">Feedback</a>
+                    <a href="#tracker" class="hover:text-indigo-600 transition font-semibold text-indigo-700"><i class="fas fa-wallet mr-1"></i>Tracker</a>
+                    <!-- Auth Buttons / User Info -->
+                    <div id="auth-buttons" class="flex gap-2 ml-1">
+                        <button id="loginBtn" class="bg-indigo-50 text-indigo-700 px-4 py-1.5 rounded-full text-sm font-medium hover:bg-indigo-100 transition">Log in</button>
+                        <button id="signupBtn" class="bg-indigo-600 text-white px-4 py-1.5 rounded-full text-sm font-medium hover:bg-indigo-700 shadow-sm transition">Sign up</button>
+                    </div>
+                    <div id="user-greeting" class="hidden items-center gap-3">
+                        <span id="userEmailDisplay" class="text-sm text-gray-600 bg-gray-100 px-3 py-1.5 rounded-full"></span>
+                        <button id="logoutBtn" class="text-red-500 text-sm font-medium hover:text-red-700"><i class="fas fa-sign-out-alt mr-1"></i>Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============== MAIN CONTENT ============== -->
+    <main>
+        <!-- LANDING SECTION (HERO) -->
+        <section id="home" class="bg-gradient-to-br from-indigo-50 via-white to-gray-50 py-16 md:py-24">
+            <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-gray-900">Smart Budget Tracker <span class="text-indigo-600">for Everyone</span></h1>
+                <p class="mt-5 text-xl text-gray-600 max-w-3xl mx-auto">Take control of your finances with AI-powered insights, real-time expense tracking, and seamless budgeting — all in one SaaS platform.</p>
+                <div class="mt-8 flex flex-wrap justify-center gap-4">
+                    <a href="#tracker" class="bg-indigo-600 hover:bg-indigo-700 text-white px-7 py-3 rounded-full font-semibold shadow-lg transition"><i class="fas fa-rocket mr-2"></i> Start Tracking Free</a>
+                    <a href="#services" class="bg-white border border-gray-300 text-gray-700 px-7 py-3 rounded-full font-semibold hover:bg-gray-50 transition">Explore Features</a>
+                </div>
+                <div class="mt-12 flex justify-center gap-6 text-sm text-gray-500">
+                    <span><i class="fas fa-check-circle text-indigo-500 mr-1"></i> No credit card</span>
+                    <span><i class="fas fa-check-circle text-indigo-500 mr-1"></i> 14-day trial</span>
+                    <span><i class="fas fa-check-circle text-indigo-500 mr-1"></i> Cancel anytime</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT US -->
+        <section id="about" class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">About <span class="text-indigo-600">FinSight</span></h2>
+                    <div class="w-24 h-1 bg-indigo-500 mx-auto mt-4 rounded-full"></div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <p class="text-gray-600 text-lg leading-relaxed">Founded in 2024, FinSight is on a mission to democratize financial wellness. Our SaaS budget tracker empowers individuals and small businesses to visualize spending, set savings goals, and achieve financial freedom without complexity.</p>
+                        <p class="mt-5 text-gray-600">We blend modern design with powerful analytics — over 10,000 users already trust FinSight to manage over $15M in transactions.</p>
+                        <div class="mt-6 flex gap-4">
+                            <div><i class="fas fa-chart-simple text-indigo-500 text-2xl"></i><p class="font-bold">Real-time sync</p></div>
+                            <div><i class="fas fa-shield-alt text-indigo-500 text-2xl"></i><p class="font-bold">Bank-grade security</p></div>
+                        </div>
+                    </div>
+                    <div class="bg-indigo-50 rounded-2xl p-6 shadow-inner">
+                        <i class="fas fa-quote-left text-indigo-300 text-3xl"></i>
+                        <p class="italic text-gray-700 mt-3">“FinSight changed how I save. The budget tracker is intuitive and motivating.”</p>
+                        <p class="font-semibold mt-4">— Mia Chen, Beta Tester</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICES -->
+        <section id="services" class="py-16 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold">Our <span class="text-indigo-600">Services</span></h2>
+                    <p class="text-gray-500 mt-2">Powerful tools to master your money</p>
+                </div>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="service-card bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                        <i class="fas fa-chart-pie text-indigo-500 text-4xl"></i>
+                        <h3 class="text-xl font-bold mt-4">Smart Analytics</h3>
+                        <p class="text-gray-500 mt-2">Visual breakdown of income vs expenses, category trends, and monthly reports.</p>
+                    </div>
+                    <div class="service-card bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                        <i class="fas fa-bell text-indigo-500 text-4xl"></i>
+                        <h3 class="text-xl font-bold mt-4">Budget Alerts</h3>
+                        <p class="text-gray-500 mt-2">Set custom limits and get real-time notifications before overspending.</p>
+                    </div>
+                    <div class="service-card bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                        <i class="fas fa-cloud-upload-alt text-indigo-500 text-4xl"></i>
+                        <h3 class="text-xl font-bold mt-4">Multi-Device Sync</h3>
+                        <p class="text-gray-500 mt-2">Access your budget from anywhere — desktop, tablet, or mobile.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TESTIMONIALS -->
+        <section id="testimonials" class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl md:text-4xl font-bold">What <span class="text-indigo-600">Users Say</span></h2>
+                </div>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="testimonial-card bg-indigo-50/40 p-6 rounded-2xl shadow-sm border">
+                        <i class="fas fa-star text-yellow-400"></i><i class="fas fa-star text-yellow-400"></i><i class="fas fa-star text-yellow-400"></i><i class="fas fa-star text-yellow-400"></i><i class="fas fa-star text-yellow-400"></i>
+                        <p class="mt-3 text-gray-700">"The cleanest budget tracker I've ever used. Syncing across devices is seamless."</p>
+                        <p class="font-bold mt-4">— Alex Morgan</p>
+                    </div>
+                    <div class="testimonial-card bg-indigo-50/40 p-6 rounded-2xl shadow-sm border">
+                        <i class="fas fa-star text-yellow-400"></i><i class="fas fa-star text-yellow-400"></i><i class="fas fa-star text-yellow-400"></i><i class="fas fa-star text-yellow-400"></i><i class="fas fa-star-half-alt text-yellow-400"></i>
+                        <p class="mt-3 text-gray-700">"Finally, a SaaS that understands freelancers. The expense tracking saved me hours."</p>
+                        <p class="font-bold mt-4">— Jordan Lee</p>
+                    </div>
+                    <div class="testimonial-card bg-indigo-50/40 p-6 rounded-2xl shadow-sm border">
+                        <i class="fas fa-star text-yellow-400"></i><i class="fas fa-star text-yellow-400"></i><i class="fas fa-star text-yellow-400"></i><i class="fas fa-star text-yellow-400"></i><i class="fas fa-star text-yellow-400"></i>
+                        <p class="mt-3 text-gray-700">"I reached my savings goal 3 months early thanks to FinSight insights."</p>
+                        <p class="font-bold mt-4">— Samira Khan</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BUDGET TRACKER SECTION (CORE UI) -->
+        <section id="tracker" class="py-16 bg-gradient-to-b from-gray-50 to-white">
+            <div class="max-w-6xl mx-auto px-5 sm:px-8 lg:px-10">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl md:text-4xl font-bold"><i class="fas fa-calculator text-indigo-500 mr-2"></i>Budget Tracker</h2>
+                    <p class="text-gray-500 mt-1">Add income/expenses & monitor your financial health</p>
+                </div>
+
+                <!-- summary cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-10">
+                    <div class="bg-white rounded-2xl shadow p-5 border-l-8 border-indigo-500">
+                        <p class="text-gray-500 text-sm">Total Balance</p>
+                        <p id="totalBalance" class="text-3xl font-bold text-gray-800">$0.00</p>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow p-5 border-l-8 border-green-500">
+                        <p class="text-gray-500 text-sm">Income</p>
+                        <p id="totalIncome" class="text-2xl font-bold text-green-600">$0.00</p>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow p-5 border-l-8 border-red-500">
+                        <p class="text-gray-500 text-sm">Expenses</p>
+                        <p id="totalExpense" class="text-2xl font-bold text-red-600">$0.00</p>
+                    </div>
+                </div>
+
+                <!-- Add transaction form -->
+                <div class="bg-white p-6 rounded-2xl shadow-md mb-8">
+                    <h3 class="font-semibold text-lg mb-4"><i class="fas fa-plus-circle text-indigo-500"></i> New Transaction</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <input type="text" id="txDesc" placeholder="Description (e.g., Groceries)" class="border rounded-xl px-4 py-2 focus:ring-indigo-400 focus:border-indigo-400">
+                        <input type="number" id="txAmount" placeholder="Amount ($)" class="border rounded-xl px-4 py-2 focus:ring-indigo-400">
+                        <select id="txType" class="border rounded-xl px-4 py-2 bg-white">
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                        </select>
+                        <button id="addTransactionBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-xl transition shadow">Add Transaction</button>
+                    </div>
+                </div>
+
+                <!-- Transaction list -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+                    <div class="bg-gray-50 px-6 py-3 border-b">
+                        <h3 class="font-semibold"><i class="fas fa-list-ul mr-2"></i>Recent Transactions</h3>
+                    </div>
+                    <div id="transactionList" class="divide-y divide-gray-100 max-h-80 overflow-y-auto">
+                        <!-- dynamic list -->
+                        <div class="p-6 text-center text-gray-400">No transactions yet. Add your first income or expense!</div>
+                    </div>
+                </div>
+                <div class="text-xs text-gray-400 text-center mt-4">💡 Data saved automatically per account (guest or logged-in user)</div>
+            </div>
+        </section>
+
+        <!-- FEEDBACK SECTION -->
+        <section id="feedback" class="py-16 bg-gray-100">
+            <div class="max-w-6xl mx-auto px-5 sm:px-8 lg:px-10">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold">Share Your <span class="text-indigo-600">Feedback</span></h2>
+                    <p class="text-gray-600">We value your opinion — help us improve FinSight</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-10">
+                    <div class="bg-white p-6 rounded-2xl shadow">
+                        <form id="feedbackForm">
+                            <input type="text" id="feedbackName" placeholder="Your name" class="w-full border rounded-xl p-3 mb-3 focus:ring-indigo-300">
+                            <textarea id="feedbackMsg" rows="3" placeholder="Write your feedback..." class="w-full border rounded-xl p-3 mb-3 focus:ring-indigo-300"></textarea>
+                            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-full font-medium">Submit Feedback</button>
+                        </form>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow">
+                        <h3 class="font-bold text-lg mb-3"><i class="fas fa-comments text-indigo-500"></i> Recent thoughts</h3>
+                        <div id="feedbackList" class="space-y-3 max-h-64 overflow-y-auto">
+                            <p class="text-gray-400 italic">No feedback yet. Be the first!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-gray-300 py-12">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div><h3 class="text-white text-xl font-bold">FinSight</h3><p class="mt-2 text-sm">Smart budgeting, smarter future.</p></div>
+            <div><h4 class="font-semibold text-white">Product</h4><ul class="mt-2 space-y-1 text-sm"><li>Budget Tracker</li><li>Pricing</li><li>Integrations</li></ul></div>
+            <div><h4 class="font-semibold text-white">Company</h4><ul class="mt-2 space-y-1 text-sm"><li>About Us</li><li>Careers</li><li>Press</li></ul></div>
+            <div><h4 class="font-semibold text-white">Legal</h4><ul class="mt-2 space-y-1 text-sm"><li>Privacy</li><li>Terms</li><li>Security</li></ul></div>
+        </div>
+        <div class="border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-500">© 2025 FinSight Inc. All rights reserved. — Take control of your budget.</div>
+    </footer>
+
+    <!-- MODALS: LOGIN & SIGNUP -->
+    <div id="loginModal" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 hidden transition-all modal-backdrop">
+        <div class="bg-white w-full max-w-md rounded-2xl p-6 shadow-2xl mx-4">
+            <div class="flex justify-between items-center"><h3 class="text-2xl font-bold">Log in</h3><button class="closeModal text-gray-500 text-2xl">&times;</button></div>
+            <form id="loginFormModal" class="mt-4 space-y-4">
+                <input type="email" id="loginEmail" placeholder="Email address" class="w-full border rounded-xl p-3" required>
+                <input type="password" id="loginPassword" placeholder="Password" class="w-full border rounded-xl p-3" required>
+                <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-xl font-semibold hover:bg-indigo-700">Login</button>
+                <p class="text-center text-sm text-gray-500">New user? <a href="#" id="switchToSignup" class="text-indigo-600 font-semibold">Sign up</a></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="signupModal" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 hidden transition-all modal-backdrop">
+        <div class="bg-white w-full max-w-md rounded-2xl p-6 shadow-2xl mx-4">
+            <div class="flex justify-between items-center"><h3 class="text-2xl font-bold">Sign up</h3><button class="closeModal text-gray-500 text-2xl">&times;</button></div>
+            <form id="signupFormModal" class="mt-4 space-y-4">
+                <input type="email" id="signupEmail" placeholder="Email" class="w-full border rounded-xl p-3" required>
+                <input type="password" id="signupPassword" placeholder="Password (min 4 chars)" class="w-full border rounded-xl p-3" required>
+                <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-xl font-semibold hover:bg-indigo-700">Create Account</button>
+                <p class="text-center text-sm">Already have an account? <a href="#" id="switchToLogin" class="text-indigo-600 font-semibold">Log in</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ---------- DATA STORAGE KEYS ----------
+        const STORAGE_USERS = "finsight_users";
+        const GUEST_ID = "guest";
+
+        // App state
+        let currentUserId = GUEST_ID;      // 'guest' or actual user email/id
+        let currentTransactions = [];       // array of {id, desc, amount, type}
+
+        // Helper: Load/Save transactions for a specific userId
+        function getTxKey(userId) { return `transactions_${userId}`; }
+        function loadTransactionsForUser(userId) {
+            const stored = localStorage.getItem(getTxKey(userId));
+            return stored ? JSON.parse(stored) : [];
+        }
+        function saveTransactionsForUser(userId, txs) {
+            localStorage.setItem(getTxKey(userId), JSON.stringify(txs));
+        }
+
+        // Sync global currentTransactions with localStorage based on currentUserId
+        function persistTransactions() {
+            if (currentUserId) {
+                saveTransactionsForUser(currentUserId, currentTransactions);
+            }
+        }
+
+        function refreshTransactionsFromStorage() {
+            if (!currentUserId) currentUserId = GUEST_ID;
+            currentTransactions = loadTransactionsForUser(currentUserId);
+            renderBudgetTracker();
+        }
+
+        // ---------- BUDGET TRACKER RENDER ----------
+        function renderBudgetTracker() {
+            let totalInc = 0, totalExp = 0;
+            currentTransactions.forEach(tx => {
+                if (tx.type === 'income') totalInc += tx.amount;
+                else totalExp += tx.amount;
+            });
+            const balance = totalInc - totalExp;
+            document.getElementById('totalBalance').innerText = `$${balance.toFixed(2)}`;
+            document.getElementById('totalIncome').innerHTML = `$${totalInc.toFixed(2)}`;
+            document.getElementById('totalExpense').innerHTML = `$${totalExp.toFixed(2)}`;
+
+            const container = document.getElementById('transactionList');
+            if (!currentTransactions.length) {
+                container.innerHTML = `<div class="p-6 text-center text-gray-400">✨ No transactions yet. Add income or expense above ✨</div>`;
+                return;
+            }
+            container.innerHTML = currentTransactions.map(tx => `
+                <div class="flex justify-between items-center p-4 transaction-item border-b">
+                    <div><span class="font-medium">${escapeHtml(tx.desc)}</span><div class="text-xs text-gray-400">${tx.type === 'income' ? 'Income' : 'Expense'}</div></div>
+                    <div class="flex items-center gap-4">
+                        <span class="font-bold ${tx.type === 'income' ? 'text-green-600' : 'text-red-600'}">${tx.type === 'income' ? '+' : '-'}$${Math.abs(tx.amount).toFixed(2)}</span>
+                        <button onclick="deleteTransaction(${tx.id})" class="text-gray-400 hover:text-red-500"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.deleteTransaction = function(id) {
+            currentTransactions = currentTransactions.filter(t => t.id !== id);
+            persistTransactions();
+            renderBudgetTracker();
+        };
+
+        function addTransaction(desc, amount, type) {
+            if (!desc.trim()) { alert("Please add a description"); return false; }
+            if (isNaN(amount) || amount <= 0) { alert("Amount must be a positive number"); return false; }
+            const newTx = { id: Date.now(), desc: desc.trim(), amount: Number(amount), type: type };
+            currentTransactions.push(newTx);
+            persistTransactions();
+            renderBudgetTracker();
+            return true;
+        }
+
+        // ---------- AUTH MANAGEMENT (mock users) ----------
+        function initUsersStore() {
+            if (!localStorage.getItem(STORAGE_USERS)) {
+                localStorage.setItem(STORAGE_USERS, JSON.stringify([]));
+            }
+        }
+        function getUsers() { return JSON.parse(localStorage.getItem(STORAGE_USERS) || "[]"); }
+        function saveUsers(users) { localStorage.setItem(STORAGE_USERS, JSON.stringify(users)); }
+
+        function signup(email, password) {
+            const users = getUsers();
+            if (users.find(u => u.email === email)) return { success: false, msg: "Email already exists" };
+            if (password.length < 4) return { success: false, msg: "Password must be at least 4 characters" };
+            const newUser = { id: email, email, password };
+            users.push(newUser);
+            saveUsers(users);
+            // initialize empty transactions for new user
+            const txKey = getTxKey(email);
+            if (!localStorage.getItem(txKey)) localStorage.setItem(txKey, JSON.stringify([]));
+            return { success: true, msg: "Account created! Please log in." };
+        }
+
+        function login(email, password) {
+            const users = getUsers();
+            const user = users.find(u => u.email === email && u.password === password);
+            if (!user) return { success: false, msg: "Invalid email or password" };
+            // set active user
+            currentUserId = user.email;
+            currentTransactions = loadTransactionsForUser(currentUserId);
+            persistTransactions(); 
+            updateAuthUI(true, user.email);
+            renderBudgetTracker();
+            return { success: true };
+        }
+
+        function logout() {
+            currentUserId = GUEST_ID;
+            currentTransactions = loadTransactionsForUser(GUEST_ID);
+            persistTransactions();
+            updateAuthUI(false);
+            renderBudgetTracker();
+        }
+
+        function updateAuthUI(isLoggedIn, email = "") {
+            const authDiv = document.getElementById("auth-buttons");
+            const greetingDiv = document.getElementById("user-greeting");
+            const userEmailSpan = document.getElementById("userEmailDisplay");
+            if (isLoggedIn) {
+                authDiv.classList.add("hidden");
+                greetingDiv.classList.remove("hidden");
+                userEmailSpan.innerText = email.split('@')[0] || email;
+            } else {
+                authDiv.classList.remove("hidden");
+                greetingDiv.classList.add("hidden");
+            }
+        }
+
+        function checkLoggedInSession() {
+            // guest by default, but if any saved user? we dont store session by default, but we can track localstorage? no, we use simple variable.
+            // we can load from previous? default is guest. However after page refresh, currentUserId reset to guest, but transactions saved per user will be guest. 
+            // We'll maintain currentUserId = GUEST_ID initially. If user previously logged in, we could store but not needed. Keep simple.
+            // For better UX we can attempt to reload last active? but safer start guest.
+            currentUserId = GUEST_ID;
+            currentTransactions = loadTransactionsForUser(GUEST_ID);
+            renderBudgetTracker();
+            updateAuthUI(false);
+        }
+
+        // ---------- FEEDBACK SECTION ----------
+        let feedbacks = [];
+        function loadFeedbacks() {
+            const stored = localStorage.getItem("finsight_feedbacks");
+            feedbacks = stored ? JSON.parse(stored) : [];
+            renderFeedbackList();
+        }
+        function renderFeedbackList() {
+            const container = document.getElementById("feedbackList");
+            if (!feedbacks.length) { container.innerHTML = '<p class="text-gray-400 italic">No feedback yet. Share your thoughts!</p>'; return; }
+            container.innerHTML = feedbacks.slice().reverse().map(fb => `<div class="bg-gray-50 p-3 rounded-lg"><p class="font-semibold">${escapeHtml(fb.name)}</p><p class="text-sm text-gray-600">${escapeHtml(fb.message)}</p></div>`).join('');
+        }
+        function addFeedback(name, message) {
+            if (!name.trim() || !message.trim()) return false;
+            feedbacks.push({ name: name.trim(), message: message.trim(), date: new Date() });
+            localStorage.setItem("finsight_feedbacks", JSON.stringify(feedbacks));
+            renderFeedbackList();
+            return true;
+        }
+
+        // escape helper
+        function escapeHtml(str) {
+            if(!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if(m === '&') return '&amp;';
+                if(m === '<') return '&lt;';
+                if(m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        // ---------- MODAL HANDLERS ----------
+        function openModal(modalId) { document.getElementById(modalId).classList.remove("hidden"); }
+        function closeAllModals() { document.querySelectorAll(".modal-backdrop").forEach(m => m.classList.add("hidden")); }
+
+        // event listeners
+        document.addEventListener("DOMContentLoaded", () => {
+            initUsersStore();
+            checkLoggedInSession();
+            loadFeedbacks();
+
+            // budget tracker add
+            document.getElementById("addTransactionBtn").addEventListener("click", () => {
+                const desc = document.getElementById("txDesc").value;
+                const amount = parseFloat(document.getElementById("txAmount").value);
+                const type = document.getElementById("txType").value;
+                if (addTransaction(desc, amount, type)) {
+                    document.getElementById("txDesc").value = "";
+                    document.getElementById("txAmount").value = "";
+                }
+            });
+
+            // Modals open/close
+            document.getElementById("loginBtn").onclick = () => openModal("loginModal");
+            document.getElementById("signupBtn").onclick = () => openModal("signupModal");
+            document.querySelectorAll(".closeModal").forEach(btn => btn.onclick = closeAllModals);
+            window.onclick = (e) => { if(e.target.classList && e.target.classList.contains('modal-backdrop')) closeAllModals(); };
+
+            // login form submit
+            document.getElementById("loginFormModal").addEventListener("submit", (e) => {
+                e.preventDefault();
+                const email = document.getElementById("loginEmail").value;
+                const pwd = document.getElementById("loginPassword").value;
+                const res = login(email, pwd);
+                if (res.success) {
+                    closeAllModals();
+                    document.getElementById("loginEmail").value = "";
+                    document.getElementById("loginPassword").value = "";
+                } else alert(res.msg);
+            });
+
+            // signup form submit
+            document.getElementById("signupFormModal").addEventListener("submit", (e) => {
+                e.preventDefault();
+                const email = document.getElementById("signupEmail").value;
+                const pwd = document.getElementById("signupPassword").value;
+                const res = signup(email, pwd);
+                if (res.success) {
+                    alert(res.msg);
+                    closeAllModals();
+                    document.getElementById("signupEmail").value = "";
+                    document.getElementById("signupPassword").value = "";
+                } else alert(res.msg);
+            });
+
+            // switch modals
+            document.getElementById("switchToSignup").onclick = (e) => { e.preventDefault(); closeAllModals(); openModal("signupModal"); };
+            document.getElementById("switchToLogin").onclick = (e) => { e.preventDefault(); closeAllModals(); openModal("loginModal"); };
+
+            // logout
+            document.getElementById("logoutBtn").onclick = () => logout();
+
+            // feedback submit
+            document.getElementById("feedbackForm").addEventListener("submit", (e) => {
+                e.preventDefault();
+                const name = document.getElementById("feedbackName").value;
+                const msg = document.getElementById("feedbackMsg").value;
+                if(addFeedback(name, msg)) {
+                    document.getElementById("feedbackName").value = "";
+                    document.getElementById("feedbackMsg").value = "";
+                    alert("Thank you for your feedback!");
+                } else alert("Please fill both fields");
+            });
+        });
+    </script>
+</body>
+</html>
